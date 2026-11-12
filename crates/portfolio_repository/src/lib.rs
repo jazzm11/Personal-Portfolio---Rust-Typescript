@@ -1,14 +1,18 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+use portfolio_models::Project;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub fn get_projects() -> Vec<Project> {
+    vec![
+        Project {
+            title: "Personal Portfolio".to_string(),
+            description: "My personal portfolio built with Rust and TypeScript.".to_string(),
+            technologies: vec![
+                "Rust".to_string(),
+                "Axum".to_string(),
+                "Lit".to_string(),
+                "TypeScript".to_string(),
+            ],
+            github_url: None,
+            demo_url: None,
+        },
+    ]
 }

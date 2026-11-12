@@ -303,6 +303,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "portfolio_models",
+ "portfolio_repository",
  "serde",
  "tokio",
 ]
@@ -312,6 +313,13 @@ name = "portfolio_models"
 version = "0.1.0"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "portfolio_repository"
+version = "0.1.0"
+dependencies = [
+ "portfolio_models",
 ]
 
 [[package]]
