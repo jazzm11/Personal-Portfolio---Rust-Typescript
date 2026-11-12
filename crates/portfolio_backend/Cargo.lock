@@ -302,8 +302,16 @@ name = "portfolio_backend"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "portfolio_models",
  "serde",
  "tokio",
+]
+
+[[package]]
+name = "portfolio_models"
+version = "0.1.0"
+dependencies = [
+ "serde",
 ]
 
 [[package]]
