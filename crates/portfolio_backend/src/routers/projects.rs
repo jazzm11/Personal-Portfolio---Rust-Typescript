@@ -1,9 +1,33 @@
-use axum::Json;
+use axum::{
+    Json,
+    extract::State,
+    http::StatusCode,
+};
+
 use portfolio_models::Project;
-use portfolio_repository::get_projects as find_projects;
+use sqlx::SqlitePool;
 
-pub async fn get_projects() -> Json<Vec<Project>> {
-    let projects = find_projects();
+pub async fn get_projects(
+    State(pool): State<SqlitePool>,
+) -> Result<Json<Vec<Project>>, StatusCode> {
+    match portfolio_repository::get_projects(&pool).await {
+        Ok(projects) => Ok(Json(projects)),
+        Err(error) => {
+            eprintln!("Failed to retrieve projects: {}", error);
+            Err(StatusCode::INTERNAL_SERVER_ERROR)
+        }
+    }
+}
 
-    Json(projects)
+pub async fn create_project(
+    State(pool): State<SqlitePool>,
+    Json(project): Json<Project>,
+) -> Result<StatusCode, StatusCode> {
+    match portfolio_repository::create_project(&pool, &project).await {
+        Ok(()) => Ok(StatusCode::CREATED),
+        Err(error) => {
+            eprintln!("Failed to create project: {}", error);
+            Err(StatusCode::INTERNAL_SERVER_ERROR)
+        }
+    }
 }
