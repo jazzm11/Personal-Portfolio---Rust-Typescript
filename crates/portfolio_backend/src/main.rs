@@ -12,7 +12,7 @@ async fn main() {
 
     println!("Connected to SQLite database!");
 
-    let app = app::create_app();
+    let app = app::create_app(pool); // Passing the connection pool to Axum
 
     let listener = TcpListener::bind("127.0.0.1:3000")
     .await

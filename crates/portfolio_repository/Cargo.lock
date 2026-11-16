@@ -699,6 +699,7 @@ name = "portfolio_repository"
 version = "0.1.0"
 dependencies = [
  "portfolio_models",
+ "serde_json",
  "sqlx",
  "tokio",
 ]
