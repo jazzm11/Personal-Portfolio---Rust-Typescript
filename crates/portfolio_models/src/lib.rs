@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Project {
+    pub id: Option<i64>,
     pub title: String,
     pub description: String,
     pub technologies: Vec<String>,
