@@ -1,9 +1,12 @@
 import { LitElement, html, css } from 'lit';
 import type { Project } from './models/project.js';
 
+// Components
+import './components/project-card.js';
+
 class PortfolioApp extends LitElement {
   // Tells Lit which properties should trigger rendering.
-  static properties = { 
+  static properties = {
     projects: { state: true }, // state: true - Makes a property reactive without reflecting it to an HTML attribute.
     loading: { state: true },
     error: { state: true },
@@ -78,18 +81,7 @@ class PortfolioApp extends LitElement {
       <h2>Projects</h2>
       ${this.projects.map(
         (project) => html`
-          <div class="project">
-            <h2>${project.title}</h2>
-            <p>${project.description}</p>
-
-            <p class="technologies">
-              Technologies: ${project.technologies.join(', ')}
-            </p>
-
-            ${project.github_url
-              ? html`<a href=${project.github_url}>GitHub</a>`
-              : ''}
-          </div>
+          <project-card .project=${project}></project-card>
         `
       )}
     `;
