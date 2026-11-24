@@ -1,12 +1,13 @@
 use axum::{
     Json,
-    extract::{State, Path},
-    http::StatusCode,
+    extract::{State, Path}, // State is used to access shared application data, in our case the SQLite connection pool. Path is used to extract parameters from the URL.
+    http::StatusCode, // StatusCode is used to return HTTP status codes to the client.
 };
 
-use portfolio_models::Project;
-use sqlx::SqlitePool;
+use portfolio_models::Project; // Imports Project model.
+use sqlx::SqlitePool; // imports database pool.
 
+// READ
 pub async fn get_projects(
     State(pool): State<SqlitePool>,
 ) -> Result<Json<Vec<Project>>, StatusCode> {
@@ -19,6 +20,7 @@ pub async fn get_projects(
     }
 }
 
+// CREATE
 pub async fn create_project(
     State(pool): State<SqlitePool>,
     Json(project): Json<Project>,
@@ -32,6 +34,7 @@ pub async fn create_project(
     }
 }
 
+// UPDATE
 pub async fn update_project(
     Path(id): Path<i64>,
     State(pool): State<SqlitePool>,
@@ -47,6 +50,7 @@ pub async fn update_project(
     }
 }
 
+// DELETE
 pub async fn delete_project(
     Path(id): Path<i64>,
     State(pool): State<SqlitePool>,
