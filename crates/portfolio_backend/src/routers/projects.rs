@@ -1,17 +1,18 @@
 use axum::{
     Json,
-    extract::{State, Path},
-    http::StatusCode,
+    extract::{State, Path}, // State is used to access shared application data, in our case the SQLite connection pool. Path is used to extract parameters from the URL.
+    http::StatusCode, // StatusCode is used to return HTTP status codes to the client.
 };
 
-use portfolio_models::Project;
-use sqlx::SqlitePool;
+use portfolio_models::Project; // Imports Project model.
+use sqlx::SqlitePool; // imports database pool.
 
+// READ
 pub async fn get_projects(
     State(pool): State<SqlitePool>,
-) -> Result<Json<Vec<Project>>, StatusCode> {
-    match portfolio_repository::get_projects(&pool).await {
-        Ok(projects) => Ok(Json(projects)),
+) -> Result<Json<Vec<Project>>, StatusCode> { // Returns a JSON response containing a list of projects or sends an HTTP status code if something went wrong,
+    match portfolio_repository::get_projects(&pool).await { // This line of code is calling the repository and accessing get_projects and passes a ref to the database connection pool.
+        Ok(projects) => Ok(Json(projects)), // This runs if the querry succeeds and converts the list into Json. 
         Err(error) => {
             eprintln!("Failed to retrieve projects: {}", error);
             Err(StatusCode::INTERNAL_SERVER_ERROR)
@@ -19,6 +20,7 @@ pub async fn get_projects(
     }
 }
 
+// CREATE
 pub async fn create_project(
     State(pool): State<SqlitePool>,
     Json(project): Json<Project>,
@@ -32,21 +34,23 @@ pub async fn create_project(
     }
 }
 
+// UPDATE
 pub async fn update_project(
-    Path(id): Path<i64>,
-    State(pool): State<SqlitePool>,
-    Json(project): Json<Project>,
+    Path(id): Path<i64>, // Project ID
+    State(pool): State<SqlitePool>, // Gets the shared SQLite database connection pool.
+    Json(project): Json<Project>, // Receives the new updated project information as JSON.
 ) -> Result<StatusCode, StatusCode> {
-    match portfolio_repository::update_project(&pool, id, &project).await {
-        Ok(true) => Ok(StatusCode::OK),
-        Ok(false) => Err(StatusCode::NOT_FOUND),
-        Err(error) => {
+    match portfolio_repository::update_project(&pool, id, &project).await { // Calling the repository.
+        Ok(true) => Ok(StatusCode::OK), // Succeeds
+        Ok(false) => Err(StatusCode::NOT_FOUND), // If the projects does'nt exist.
+        Err(error) => { // If something goes wrong.
             eprintln!("Failed to update project: {}", error);
             Err(StatusCode::INTERNAL_SERVER_ERROR)
         }
     }
 }
 
+// DELETE
 pub async fn delete_project(
     Path(id): Path<i64>,
     State(pool): State<SqlitePool>,

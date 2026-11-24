@@ -1,5 +1,5 @@
-use axum::Json;
-use serde::Serialize;
+use axum::Json; // Returns data as a JSON format.
+use serde::Serialize; // Used to convert RUST structs into formats like JSON.
 
 #[derive(Serialize)]
 pub struct HealthResponse {
