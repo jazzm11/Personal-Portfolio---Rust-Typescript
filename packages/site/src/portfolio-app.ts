@@ -2,10 +2,26 @@ import { LitElement, html, css } from 'lit';
 import type { Project } from './models/project.js';
 
 class PortfolioApp extends LitElement {
-  projects: Project[] = [];
-  loading = true;
-  error = '';
-    
+  // Tells Lit which properties should trigger rendering.
+  static properties = { 
+    projects: { state: true }, // state: true - Makes a property reactive without reflecting it to an HTML attribute.
+    loading: { state: true },
+    error: { state: true },
+  };
+
+  declare projects: Project[]; // Tells TypeScript that these properties are defined elsewhere by Lit.
+  declare loading: boolean;
+  declare error: string;
+
+  // Initializes the properties when the component is created.
+  constructor() {
+    super();
+
+    this.projects = [];
+    this.loading = true;
+    this.error = '';
+  }
+
   static styles = css`
     :host {
       display: block;
@@ -44,7 +60,6 @@ class PortfolioApp extends LitElement {
       console.error(err);
     } finally {
       this.loading = false;
-      this.requestUpdate();
     }
   }
 
@@ -58,8 +73,9 @@ class PortfolioApp extends LitElement {
     }
 
     return html`
-      <h1>My Portfolio</h1>
-
+      <h1>JRUM Portfolio</h1>
+      
+      <h2>Projects</h2>
       ${this.projects.map(
         (project) => html`
           <div class="project">
